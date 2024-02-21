@@ -2,10 +2,12 @@
 
 namespace Bangazon.Models
 {
-    public class PaymentType
+    public class OrderProduct
     {
         public int Id { get; set; }
-        [Required]
-        public string Category { get; set; }
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
+
     }
 }
+
