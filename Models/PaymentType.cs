@@ -7,5 +7,6 @@ namespace Bangazon.Models
         public int Id { get; set; }
         [Required]
         public string Category { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }
