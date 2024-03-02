@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bangazon.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    partial class BangazonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240227020217_JCS-PtoductDTO")]
+    partial class JCSPtoductDTO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,19 +31,22 @@ namespace Bangazon.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("IsComplete")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("PaymentTypeId")
+                    b.Property<int>("PaymentType")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Uid")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("PaymentTypeId")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentTypeId");
 
                     b.ToTable("Orders");
 
@@ -49,23 +54,11 @@ namespace Bangazon.Migrations
                         new
                         {
                             Id = 1,
-                            IsComplete = true,
-                            PaymentTypeId = 1,
-                            Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
-                        },
-                        new
-                        {
-                            Id = 2,
+                            CustomerId = 1,
                             IsComplete = false,
-                            PaymentTypeId = 2,
-                            Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsComplete = true,
-                            PaymentTypeId = 2,
-                            Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
+                            PaymentType = 0,
+                            PaymentTypeId = new DateTime(2024, 2, 26, 20, 2, 17, 79, DateTimeKind.Local).AddTicks(7435),
+                            SellerId = 2
                         });
                 });
 
@@ -117,42 +110,39 @@ namespace Bangazon.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProductTypeId")
-                        .IsRequired()
-                        .HasColumnType("integer");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<int>("SellerId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("ProductTypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 696969,
                             Image = "https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RW16TLP?ver=5c8b&q=90&m=6&h=705&w=1253&b=%23FFFFFFFF&f=jpg&o=f&p=140&aim=true",
                             Price = 999.99m,
                             ProductName = "Laptop",
-                            ProductTypeId = 1,
                             Quantity = 10,
-                            SellerId = 2
+                            SellerId = 2,
+                            TypeId = 1
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 420420,
                             Image = "https://images.squarespace-cdn.com/content/v1/60749d2bc6ea077ef59f25bb/1668559020652-VH40D8P9YVPWO6MJKDA0/Butterfly+Shirt+1+Front.jpg",
                             Price = 19.99m,
                             ProductName = "T-shirt",
-                            ProductTypeId = 2,
                             Quantity = 20,
-                            SellerId = 2
+                            SellerId = 2,
+                            TypeId = 2
                         });
                 });
 
@@ -176,22 +166,12 @@ namespace Bangazon.Migrations
                         new
                         {
                             Id = 1,
-                            Type = "Accessories"
+                            Type = "Electronics"
                         },
                         new
                         {
                             Id = 2,
-                            Type = "Tops"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Type = "Shoes"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Type = "Bottoms"
+                            Type = "Clothing"
                         });
                 });
 
@@ -274,26 +254,6 @@ namespace Bangazon.Migrations
                     b.ToTable("OrderProduct", (string)null);
                 });
 
-            modelBuilder.Entity("Bangazon.Models.Order", b =>
-                {
-                    b.HasOne("Bangazon.Models.PaymentType", "PaymentType")
-                        .WithMany("Orders")
-                        .HasForeignKey("PaymentTypeId");
-
-                    b.Navigation("PaymentType");
-                });
-
-            modelBuilder.Entity("Bangazon.Models.Product", b =>
-                {
-                    b.HasOne("Bangazon.Models.ProductType", "ProductType")
-                        .WithMany()
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductType");
-                });
-
             modelBuilder.Entity("OrderProduct", b =>
                 {
                     b.HasOne("Bangazon.Models.Order", null)
@@ -307,11 +267,6 @@ namespace Bangazon.Migrations
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bangazon.Models.PaymentType", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

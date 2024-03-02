@@ -6,9 +6,14 @@ namespace Bangazon.Models
     {
         public int Id { get; set; }
         [Required]
-        public int CustomerId { get; set; }
-        public int SellerId { get; set; }
+        public string Uid { get; set; }
         public bool IsComplete { get; set; }
-        public DateTime PaymentTypeId { get; set; }
+
+        public PaymentType PaymentType { get; set; }
+
+        public int? PaymentTypeId { get; set; }
+
+        public ICollection<Product> Products { get; set; }
     }
 }
+

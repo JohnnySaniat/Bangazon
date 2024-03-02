@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bangazon.Migrations
 {
     [DbContext(typeof(BangazonDbContext))]
-    partial class BangazonDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240228141619_JCS-ProductTypeUpdate")]
+    partial class JCSProductTypeUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace Bangazon.Migrations
                     b.Property<bool>("IsComplete")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("PaymentTypeId")
+                    b.Property<int>("PaymentType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Uid")
@@ -41,8 +43,6 @@ namespace Bangazon.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentTypeId");
-
                     b.ToTable("Orders");
 
                     b.HasData(
@@ -50,21 +50,21 @@ namespace Bangazon.Migrations
                         {
                             Id = 1,
                             IsComplete = true,
-                            PaymentTypeId = 1,
+                            PaymentType = 1,
                             Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
                         },
                         new
                         {
                             Id = 2,
                             IsComplete = false,
-                            PaymentTypeId = 2,
+                            PaymentType = 2,
                             Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
                         },
                         new
                         {
                             Id = 3,
                             IsComplete = true,
-                            PaymentTypeId = 2,
+                            PaymentType = 2,
                             Uid = "UddDl9yg9Nhq28kdu0SQyjjstkr2"
                         });
                 });
@@ -274,15 +274,6 @@ namespace Bangazon.Migrations
                     b.ToTable("OrderProduct", (string)null);
                 });
 
-            modelBuilder.Entity("Bangazon.Models.Order", b =>
-                {
-                    b.HasOne("Bangazon.Models.PaymentType", "PaymentType")
-                        .WithMany("Orders")
-                        .HasForeignKey("PaymentTypeId");
-
-                    b.Navigation("PaymentType");
-                });
-
             modelBuilder.Entity("Bangazon.Models.Product", b =>
                 {
                     b.HasOne("Bangazon.Models.ProductType", "ProductType")
@@ -307,11 +298,6 @@ namespace Bangazon.Migrations
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bangazon.Models.PaymentType", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

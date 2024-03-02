@@ -5,7 +5,8 @@ namespace Bangazon.Models
     public class User
     {
         public int Id { get; set; }
-        public string FirebaseKey { get; set; }
+        [Required]
+        public string Uid { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -16,7 +17,6 @@ namespace Bangazon.Models
         public string Address { get; set; }
         [Required]
         public string Email { get; set; }
-        [Required]
         public bool IsSeller { get; set; }
     }
 }
